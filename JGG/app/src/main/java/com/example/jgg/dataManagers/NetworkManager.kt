@@ -70,7 +70,7 @@ class NetworkManager constructor(context: Context)
 
     public suspend fun queryAllChampionsInfo(context: Context)
     {
-        val url = "www....." // poner aqui la url que vas a usar del json
+        val url = "http://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json" // poner aqui la url que vas a usar del json
         query(url,::insertAllChampionsInfo,::manageNetworkError,context)
     }
 
