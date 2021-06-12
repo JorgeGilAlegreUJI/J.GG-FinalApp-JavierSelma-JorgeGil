@@ -1,5 +1,6 @@
 package com.example.jgg.dataManagers
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
@@ -12,12 +13,15 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import kotlin.reflect.KSuspendFunction1
 
-class NetworkManager constructor(context: Context)
+class NetworkManager constructor(val context: Context)
 {
+    var originalContext : Context = context
+
     public val AllChampionData = mutableListOf<ChampionData>()
     //Codigo para hacer la clase Singleton
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var INSTANCE: NetworkManager? = null
         fun getInstance(context: Context) =
@@ -68,10 +72,10 @@ class NetworkManager constructor(context: Context)
         Log.d("Custom",msg);
     }
 
-    public suspend fun queryAllChampionsInfo(context: Context)
+    public suspend fun queryAllChampionsInfo()
     {
-        val url = "http://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json" // poner aqui la url que vas a usar del json
-        query(url,::insertAllChampionsInfo,::manageNetworkError,context)
+        val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json" // poner aqui la url que vas a usar del json
+        query(url,::insertAllChampionsInfo,::manageNetworkError,originalContext)
     }
 
     public  suspend fun  insertAllChampionsInfo(response: String)
@@ -91,6 +95,7 @@ class NetworkManager constructor(context: Context)
 
         val championdata = ChampionData(championName,championTitle,portraiturl ); // el tema imagenes habra que ver como lo hacemos, pero en sea batlle iba por bitmaps guardados en una carpeta aunque parecia engorroso.
         AllChampionData.add(championdata) // una vez metidos todos los champs en la lista se termina el papel del NetworkManager
+        Log.d("Custom",response)
 
 
     }
