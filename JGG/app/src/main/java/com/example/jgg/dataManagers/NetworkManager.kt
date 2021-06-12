@@ -87,8 +87,9 @@ class NetworkManager constructor(context: Context)
 
         val championName = "Darius"
         val championTitle ="La polla de Noxus"
+        val portraiturl = "www..."
 
-        val championdata = ChampionData(championName,championTitle,null); // el tema imagenes habra que ver como lo hacemos, pero en sea batlle iba por bitmaps guardados en una carpeta aunque parecia engorroso.
+        val championdata = ChampionData(championName,championTitle,portraiturl ); // el tema imagenes habra que ver como lo hacemos, pero en sea batlle iba por bitmaps guardados en una carpeta aunque parecia engorroso.
         AllChampionData.add(championdata) // una vez metidos todos los champs en la lista se termina el papel del NetworkManager
 
 
