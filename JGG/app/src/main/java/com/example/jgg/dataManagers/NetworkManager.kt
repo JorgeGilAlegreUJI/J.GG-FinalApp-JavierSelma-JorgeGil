@@ -78,7 +78,7 @@ class NetworkManager constructor(val context: Context)
         query(url,::insertAllChampionsInfo,::manageNetworkError,originalContext)
     }
 
-    public  suspend fun  insertAllChampionsInfo(response: String)
+    public suspend fun insertAllChampionsInfo(response: String)
     {
         val fulljson =  JSONObject(response)
         //aqui van los parses del fulljson, hay comandos para sacar lo que sea y recorrer bucles y demás
