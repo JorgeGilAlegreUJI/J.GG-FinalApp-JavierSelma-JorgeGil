@@ -50,7 +50,7 @@ class RecyclerAdapter( private  var imagesurl : MutableList<String>,private  var
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
-        Glide.with(inputActivity).load("http://goo.gl/gEgYUd").into(holder.imageView);
+        Glide.with(inputActivity).load("https://ddragon.leagueoflegends.com/cdn/11.12.1/img/champion/Aatrox.png").into(holder.imageView);
     }
 
 

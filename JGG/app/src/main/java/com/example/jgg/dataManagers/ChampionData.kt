@@ -4,4 +4,4 @@ import android.graphics.Bitmap
 import android.media.Image
 
 //añadir las demás variables que hagan falta
-data class ChampionData(val name:String,val title:String,val portrait:Bitmap?)
+data class ChampionData(val name:String,val title:String,val portraitURL:String)
