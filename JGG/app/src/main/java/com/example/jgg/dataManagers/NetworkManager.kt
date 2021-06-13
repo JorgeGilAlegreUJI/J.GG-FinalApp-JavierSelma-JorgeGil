@@ -2,31 +2,34 @@ package com.example.jgg.dataManagers
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.util.Log
+import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.covidstats.RecyclerAdapter
+import com.example.jgg.InputActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import kotlin.reflect.KSuspendFunction1
 
-class NetworkManager constructor(val context: Context)
+class NetworkManager constructor(val inputActivity: InputActivity)
 {
-    var originalContext : Context = context
-
-    public val AllChampionData = mutableListOf<ChampionData>()
+    private val AllChampionData = mutableListOf<ChampionData>()
     //Codigo para hacer la clase Singleton
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var INSTANCE: NetworkManager? = null
-        fun getInstance(context: Context) =
+        fun getInstance(inputActivity: InputActivity) =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: NetworkManager(context).also {
+                INSTANCE ?: NetworkManager(inputActivity).also {
                     INSTANCE = it
                 }
             }
@@ -34,7 +37,7 @@ class NetworkManager constructor(val context: Context)
     private val requestQueue: RequestQueue by lazy {
         // applicationContext is key, it keeps you from leaking the
         // Activity or BroadcastReceiver if someone passes one in.
-        Volley.newRequestQueue(context.applicationContext)
+        Volley.newRequestQueue(inputActivity.applicationContext)
     }
     fun <T> addToRequestQueue(req: Request<T>) {
         requestQueue.add(req)
@@ -42,7 +45,12 @@ class NetworkManager constructor(val context: Context)
 
     //Codigo de la query ( no editar si es posible)
 
-    public suspend fun query(url: String, onValidexternalFunction: KSuspendFunction1<String, Unit>, onInvalidexternalFunction: KSuspendFunction1<String, Unit>, context: Context)
+    public suspend fun query(
+        url: String,
+        onValidexternalFunction: KSuspendFunction1<String, Unit>,
+        onInvalidexternalFunction: KSuspendFunction1<String, Unit>,
+        context: Context
+    )
     {
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
             { response ->
@@ -60,7 +68,7 @@ class NetworkManager constructor(val context: Context)
         )
 
         // Access the RequestQueue through your singleton class.
-        getInstance(context).addToRequestQueue(jsonObjectRequest)
+        getInstance(inputActivity).addToRequestQueue(jsonObjectRequest)
 
 
     }
@@ -69,13 +77,15 @@ class NetworkManager constructor(val context: Context)
     //CustomCode (a partir de aqui toodo lo que sea libre)
     public  suspend fun manageNetworkError(msg: String)
     {
-        Log.d("Custom",msg);
+        Log.d("Custom", msg);
     }
 
     public suspend fun queryAllChampionsInfo()
     {
-        val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json" // poner aqui la url que vas a usar del json
-        query(url,::insertAllChampionsInfo,::manageNetworkError,originalContext)
+        Log.d("Custom","quering")
+        AllChampionData.clear()
+        val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json"
+        query(url, ::insertAllChampionsInfo, ::manageNetworkError, inputActivity)
     }
 
     public suspend fun insertAllChampionsInfo(response: String)
@@ -101,11 +111,45 @@ class NetworkManager constructor(val context: Context)
             val magicValue = champStats.getInt("magic")
             val difficultyValue = champStats.getInt("difficulty")
 
-            val champTags = arrayOf<String>(champion.getJSONArray("tags").toString())
+            val champTags = champion.getJSONArray("tags")
 
-            val championdata = ChampionData(name, title,attackValue, defenseValue, magicValue, difficultyValue, champTags, champSquarePortraitURL)
+            var champTagsArray: Array<String> = Array(champTags.length()) { "" }
+
+            for (i in 0 until champTags.length()) {
+                champTagsArray[i] = champTags.getString(i).toString()
+
+                // Your code here
+            }
+
+
+
+
+            val championdata = ChampionData(
+                name,
+                title,
+                attackValue,
+                defenseValue,
+                magicValue,
+                difficultyValue,
+                champTagsArray,
+                champSquarePortraitURL
+            )
             AllChampionData.add(championdata)
         }
+
+        updateRV()
+
+
+    }
+
+    private fun updateRV()
+    {
+        var spanCount = 4
+
+        if (inputActivity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) spanCount = 7
+
+        inputActivity.RV.layoutManager = GridLayoutManager(inputActivity, spanCount)
+        inputActivity.RV.adapter = RecyclerAdapter(AllChampionData, inputActivity)
     }
 
 

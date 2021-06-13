@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".DisplayAcitvity">
+
+
+    <ImageView
+        android:id="@+id/Portrait"
+        android:layout_width="116dp"
+        android:layout_height="116dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.026"
+        app:srcCompat="@drawable/aatrox" />
+
+    <TextView
+        android:id="@+id/Name"
+        android:layout_width="237dp"
+        android:layout_height="50dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="nunu Y willump"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toEndOf="@+id/Portrait"
+        app:layout_constraintTop_toTopOf="@+id/Portrait"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/TagsTitle"
+        android:layout_width="376dp"
+        android:layout_height="45dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="Tags"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/attackValue"
+        app:layout_constraintTop_toBottomOf="@+id/attackValue"
+        app:layout_constraintVertical_bias="0.036" />
+
+    <TextView
+        android:id="@+id/tags"
+        android:layout_width="376dp"
+        android:layout_height="45dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="TagsTagsTagsTagsTagsTags"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/TagsTitle"
+        app:layout_constraintTop_toBottomOf="@+id/TagsTitle"
+        app:layout_constraintVertical_bias="0.037" />
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="237dp"
+        android:layout_height="50dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="the Boy Who Shattered Time"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/Name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Name"
+        app:layout_constraintTop_toBottomOf="@+id/Name"
+        app:layout_constraintVertical_bias="0.026" />
+
+    <TextView
+        android:id="@+id/Attack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text=" Attack "
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Portrait"
+        app:layout_constraintTop_toBottomOf="@+id/Portrait"
+        app:layout_constraintVertical_bias="0.063" />
+
+    <TextView
+        android:id="@+id/attackValue"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/Attack"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Attack"
+        app:layout_constraintTop_toBottomOf="@+id/Attack"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <TextView
+        android:id="@+id/defenseValue"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/Defense"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Defense"
+        app:layout_constraintTop_toBottomOf="@+id/Defense"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <TextView
+        android:id="@+id/difficultyValue"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/Difficulty"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Difficulty"
+        app:layout_constraintTop_toBottomOf="@+id/Difficulty"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <TextView
+        android:id="@+id/magicValue"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/Magic"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Magic"
+        app:layout_constraintTop_toBottomOf="@+id/Magic"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <TextView
+        android:id="@+id/Defense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text=" Defense "
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toEndOf="@+id/Attack"
+        app:layout_constraintTop_toTopOf="@+id/Attack"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/Magic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text=" Magic "
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintStart_toEndOf="@+id/Defense"
+        app:layout_constraintTop_toTopOf="@+id/Defense"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/Difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#8A050505"
+        android:gravity="center"
+        android:text=" Difficulty "
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintStart_toEndOf="@+id/Magic"
+        app:layout_constraintTop_toTopOf="@+id/Magic"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
