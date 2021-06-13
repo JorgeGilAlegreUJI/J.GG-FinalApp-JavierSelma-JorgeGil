@@ -25,20 +25,8 @@ class InputActivity : AppCompatActivity()
         setContentView(R.layout.activity_input)
         RV =  findViewById<RecyclerView>(R.id.rv_recyclerView)
         if(networkManager.AllChampionData.isEmpty())makeQuery()
-        else
-        {
-            updateVisuals()
-        }
+        else updateVisuals()
     }
-
-    /*
-    override fun onResume() {
-        super.onResume()
-        updateScreen()
-
-    }
-
-     */
 
     fun makeQuery()
     {

@@ -60,7 +60,7 @@ class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,pr
         val champName = ChampionsData[position].name
 
 
-        Glide.with(inputActivity).load(ChampionsData[position].portraitURL).into(holder.imageView)
+        Glide.with(inputActivity).load(ChampionsData[position].portraitURL).placeholder(R.drawable.loading).into(holder.imageView)
 
 
         holder.textView.text = champName
