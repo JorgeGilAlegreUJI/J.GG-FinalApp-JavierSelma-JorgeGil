@@ -22,6 +22,7 @@ import com.example.jgg.InputActivity
 import com.example.jgg.R
 import com.example.jgg.dataManagers.ChampionData
 import org.w3c.dom.Text
+import java.sql.Time
 
 class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,private  var inputActivity: InputActivity) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -33,7 +34,6 @@ class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,pr
 
         //takes care of click events
         init {
-            //imageView.setImageResource(R.drawable.aatrox)
 
 
             itemView.setOnClickListener { v: View ->
@@ -58,6 +58,8 @@ class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,pr
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
         val champName = ChampionsData[position].name
+
+
         Glide.with(inputActivity).load(ChampionsData[position].portraitURL).into(holder.imageView)
 
 

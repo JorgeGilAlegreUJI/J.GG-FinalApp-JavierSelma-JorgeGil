@@ -20,7 +20,7 @@ import kotlin.reflect.KSuspendFunction1
 
 class NetworkManager constructor(val inputActivity: InputActivity)
 {
-    private val AllChampionData = mutableListOf<ChampionData>()
+    public val AllChampionData = mutableListOf<ChampionData>()
     //Codigo para hacer la clase Singleton
 
     companion object {
@@ -82,7 +82,6 @@ class NetworkManager constructor(val inputActivity: InputActivity)
 
     public suspend fun queryAllChampionsInfo()
     {
-        Log.d("Custom","quering")
         AllChampionData.clear()
         val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json"
         query(url, ::insertAllChampionsInfo, ::manageNetworkError, inputActivity)
@@ -137,20 +136,11 @@ class NetworkManager constructor(val inputActivity: InputActivity)
             AllChampionData.add(championdata)
         }
 
-        updateRV()
+        inputActivity.updateVisuals()
 
 
     }
 
-    private fun updateRV()
-    {
-        var spanCount = 4
-
-        if (inputActivity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) spanCount = 7
-
-        inputActivity.RV.layoutManager = GridLayoutManager(inputActivity, spanCount)
-        inputActivity.RV.adapter = RecyclerAdapter(AllChampionData, inputActivity)
-    }
 
 
 

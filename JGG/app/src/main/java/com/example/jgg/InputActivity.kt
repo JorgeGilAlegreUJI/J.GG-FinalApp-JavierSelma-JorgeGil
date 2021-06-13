@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.covidstats.RecyclerAdapter
 import com.example.jgg.dataManagers.ChampionData
 import com.example.jgg.dataManagers.NetworkManager
 import kotlinx.coroutines.GlobalScope
@@ -22,21 +24,39 @@ class InputActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input)
         RV =  findViewById<RecyclerView>(R.id.rv_recyclerView)
-        updateScreen()
+        if(networkManager.AllChampionData.isEmpty())makeQuery()
+        else
+        {
+            updateVisuals()
+        }
     }
 
+    /*
     override fun onResume() {
         super.onResume()
         updateScreen()
 
     }
 
-    fun updateScreen()
+     */
+
+    fun makeQuery()
     {
         GlobalScope.launch {
             networkManager.queryAllChampionsInfo()
 
         }
+    }
+
+    public fun updateVisuals()
+    {
+        var spanCount = 4
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) spanCount = 7
+
+
+        RV.layoutManager = GridLayoutManager(this, spanCount)
+        RV.adapter = RecyclerAdapter(networkManager.AllChampionData, this)
     }
 
 
