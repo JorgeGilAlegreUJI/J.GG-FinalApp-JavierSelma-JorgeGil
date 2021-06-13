@@ -2,15 +2,12 @@ package com.example.jgg.dataManagers
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.util.Log
-import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.covidstats.RecyclerAdapter
+import com.example.jgg.Champion
 import com.example.jgg.InputActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -83,8 +80,112 @@ class NetworkManager constructor(val inputActivity: InputActivity)
     public suspend fun queryAllChampionsInfo()
     {
         AllChampionData.clear()
-        val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json"
-        query(url, ::insertAllChampionsInfo, ::manageNetworkError, inputActivity)
+
+        if(inputActivity.db.ChampionDAO().getAllChampionsNames().isEmpty())
+        {
+            val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json"
+            query(url, ::insertAllChampionsInfo, ::manageNetworkError, inputActivity)
+        }
+        else
+        {
+            insertFromDBonList()
+        }
+
+    }
+
+    public  suspend fun insertFromDBonList()
+    {
+        var champs = inputActivity.db.ChampionDAO().getAllChampions()
+
+        for(c in champs)
+        {
+            var data = ChampionData(
+                c.name,
+                c.title,
+                c.attackValue,
+                c.defenseValue,
+                c.magicValue,
+                c.difficultyValue,
+                stringToArray(
+                    c.arrayOfTags
+                ),
+                c.portraitURL
+            )
+            AllChampionData.add(data)
+        }
+
+        inputActivity.runOnUiThread(Runnable {
+            inputActivity.updateVisuals()
+        })
+
+
+    }
+
+    fun stringToArray(string: String) : Array<String>
+    {
+
+        var final = mutableListOf<String>()
+        var lastindex = 0
+
+        for(i in string.indices)
+        {
+            if(string[i] == '*')
+            {
+                var s = getString(lastindex, i, string)
+                final.add(s)
+                lastindex = i+1
+            }
+        }
+
+        return  final.toTypedArray()
+
+
+
+    }
+
+    fun getString(from: Int, to: Int, original: String) : String
+    {
+        var final = ""
+
+        for( i in from until  to)
+        {
+            final += original[i]
+        }
+
+        return  final
+
+
+
+    }
+
+    fun arrayToString(array: Array<String>) : String
+    {
+        var final = ""
+
+        for(s in array)
+        {
+            final+= s+"*"
+        }
+
+        return  final
+    }
+
+    suspend  fun addChampToDatabase(championData: ChampionData)
+    {
+        val c = Champion(
+            0,
+            championData.name,
+            championData.title,
+            championData.attackValue,
+            championData.defenseValue,
+            championData.magicValue,
+            championData.difficultyValue,
+            arrayToString(
+                championData.arrayOfTags
+            ),
+            championData.portraitURL
+        )
+        inputActivity.db.ChampionDAO().insert(c)
     }
 
     public suspend fun insertAllChampionsInfo(response: String)
@@ -134,6 +235,7 @@ class NetworkManager constructor(val inputActivity: InputActivity)
                 champSquarePortraitURL
             )
             AllChampionData.add(championdata)
+            addChampToDatabase(championdata)
         }
 
         inputActivity.updateVisuals()

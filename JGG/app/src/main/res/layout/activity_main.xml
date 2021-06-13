@@ -51,6 +51,22 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
+        android:id="@+id/textView4"
+        android:layout_width="362dp"
+        android:layout_height="58dp"
+        android:gravity="center"
+        android:text="Javier Selma Rubio | Jorge Gil Alegre"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.659" />
+
+    <TextView
         android:id="@+id/textView2"
         android:layout_width="362dp"
         android:layout_height="58dp"

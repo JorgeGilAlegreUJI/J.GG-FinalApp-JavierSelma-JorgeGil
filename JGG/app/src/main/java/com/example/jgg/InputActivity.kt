@@ -18,12 +18,14 @@ import kotlinx.coroutines.launch
 class InputActivity : AppCompatActivity()
 {
     private val networkManager = NetworkManager.getInstance(this)
+    public lateinit var db : Database
     public lateinit var RV : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input)
         RV =  findViewById<RecyclerView>(R.id.rv_recyclerView)
+        db = Database.getInstance(this)
         if(networkManager.AllChampionData.isEmpty())makeQuery()
         else updateVisuals()
     }
@@ -57,6 +59,8 @@ class InputActivity : AppCompatActivity()
 
         this.startActivity(intent)
     }
+
+
 
 
 }
