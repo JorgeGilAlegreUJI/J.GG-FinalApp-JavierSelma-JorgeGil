@@ -81,23 +81,31 @@ class NetworkManager constructor(val context: Context)
     public suspend fun insertAllChampionsInfo(response: String)
     {
         val fulljson =  JSONObject(response)
-        //aqui van los parses del fulljson, hay comandos para sacar lo que sea y recorrer bucles y demás
+        val data = fulljson.getJSONObject("data");
+        val championNames = data.names()
 
-        //...
+        for (i in 0 until data.length()){
+            val champion = data.getJSONObject(championNames[i].toString())
 
+            val id = champion.getString("id")
 
-        //Una vez se haya parseado la info se guarda en un objeto de la clase ChampionData y ese objeto se guarda en la lista AllChampionsData
-        //por ejemplo:
+            val champSquarePortraitURL = "https://ddragon.leagueoflegends.com/cdn/11.12.1/img/champion/$id.png"
 
-        val championName = "Darius"
-        val championTitle ="La polla de Noxus"
-        val portraiturl = "www..."
+            val name = champion.getString("name")
+            val title = champion.getString("title")
 
-        val championdata = ChampionData(championName,championTitle,portraiturl ); // el tema imagenes habra que ver como lo hacemos, pero en sea batlle iba por bitmaps guardados en una carpeta aunque parecia engorroso.
-        AllChampionData.add(championdata) // una vez metidos todos los champs en la lista se termina el papel del NetworkManager
-        Log.d("Custom",response)
+            val champStats = champion.getJSONObject("info")
 
+            val attackValue = champStats.getInt("attack")
+            val defenseValue = champStats.getInt("defense")
+            val magicValue = champStats.getInt("magic")
+            val difficultyValue = champStats.getInt("difficulty")
 
+            val champTags = arrayOf<String>(champion.getJSONArray("tags").toString())
+
+            val championdata = ChampionData(name, title,attackValue, defenseValue, magicValue, difficultyValue, champTags, champSquarePortraitURL)
+            AllChampionData.add(championdata)
+        }
     }
 
 
