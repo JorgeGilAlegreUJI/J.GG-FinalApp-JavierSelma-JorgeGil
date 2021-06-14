@@ -8,6 +8,8 @@
     tools:context=".DisplayAcitvity">
 
 
+
+
     <ImageView
         android:id="@+id/Portrait"
         android:layout_width="116dp"
@@ -19,6 +21,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.026"
         app:srcCompat="@drawable/aatrox" />
+
+
+
 
     <TextView
         android:id="@+id/Name"
@@ -37,39 +42,21 @@
         app:layout_constraintTop_toTopOf="@+id/Portrait"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <TextView
         android:id="@+id/TagsTitle"
         android:layout_width="376dp"
         android:layout_height="45dp"
+        android:layout_marginTop="16dp"
         android:background="#8A050505"
         android:gravity="center"
         android:text="Tags"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/attackValue"
-        app:layout_constraintTop_toBottomOf="@+id/attackValue"
-        app:layout_constraintVertical_bias="0.036" />
-
-    <TextView
-        android:id="@+id/tags"
-        android:layout_width="376dp"
-        android:layout_height="45dp"
-        android:background="#8A050505"
-        android:gravity="center"
-        android:text="TagsTagsTagsTagsTagsTags"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/TagsTitle"
-        app:layout_constraintTop_toBottomOf="@+id/TagsTitle"
-        app:layout_constraintVertical_bias="0.037" />
+        app:layout_constraintEnd_toEndOf="@+id/Difficulty"
+        app:layout_constraintStart_toStartOf="@+id/Attack"
+        app:layout_constraintTop_toBottomOf="@+id/attackValue" />
 
     <TextView
         android:id="@+id/Title"
@@ -223,6 +210,112 @@
         app:layout_constraintStart_toEndOf="@+id/Magic"
         app:layout_constraintTop_toTopOf="@+id/Magic"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="376dp"
+        android:layout_height="wrap_content"
+        android:onClick="displayLore"
+        android:text="Show Lore"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/IndianRed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/TagsTitle"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="@+id/TagsTitle"
+        app:layout_constraintTop_toBottomOf="@+id/TagsTitle"
+        app:layout_constraintVertical_bias="0.058" />
+
+    <ImageView
+        android:id="@+id/ab1"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintStart_toStartOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:srcCompat="@drawable/aatrox"
+        android:elevation = "4dp"
+        android:onClick="displayAbilityInfo"/>
+
+    <ImageView
+        android:id="@+id/ab2"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.226"
+        app:layout_constraintStart_toEndOf="@+id/ab1"
+        app:layout_constraintTop_toTopOf="@+id/ab1"
+        app:srcCompat="@drawable/aatrox"
+        android:elevation = "4dp"
+        android:onClick="displayAbilityInfo"/>
+
+    <ImageView
+        android:id="@+id/ab3"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="@+id/ab1"
+        app:layout_constraintTop_toBottomOf="@+id/ab1"
+        app:srcCompat="@drawable/aatrox"
+        android:elevation = "4dp"
+        android:onClick="displayAbilityInfo"/>
+
+    <ImageView
+        android:id="@+id/ab4"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="@+id/ab2"
+        app:layout_constraintTop_toBottomOf="@+id/ab2"
+        app:srcCompat="@drawable/aatrox"
+        android:elevation = "4dp"
+        android:onClick="displayAbilityInfo"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#9FA52A2A"
+        app:layout_constraintBottom_toBottomOf="@+id/ab1"
+        app:layout_constraintEnd_toEndOf="@+id/ab1"
+        app:layout_constraintStart_toStartOf="@+id/ab1"
+        app:layout_constraintTop_toTopOf="@+id/ab1" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#9FA52A2A"
+        app:layout_constraintBottom_toBottomOf="@+id/ab2"
+        app:layout_constraintEnd_toEndOf="@+id/ab2"
+        app:layout_constraintStart_toStartOf="@+id/ab2"
+        app:layout_constraintTop_toTopOf="@+id/ab2" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#9FA52A2A"
+        app:layout_constraintBottom_toBottomOf="@+id/ab3"
+        app:layout_constraintEnd_toEndOf="@+id/ab3"
+        app:layout_constraintStart_toStartOf="@+id/ab3"
+        app:layout_constraintTop_toTopOf="@+id/ab3" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#9FA52A2A"
+        app:layout_constraintBottom_toBottomOf="@+id/ab4"
+        app:layout_constraintEnd_toEndOf="@+id/ab4"
+        app:layout_constraintStart_toStartOf="@+id/ab4"
+        app:layout_constraintTop_toTopOf="@+id/ab4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

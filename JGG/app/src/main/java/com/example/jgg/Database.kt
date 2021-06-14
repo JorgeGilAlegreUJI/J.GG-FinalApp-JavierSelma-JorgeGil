@@ -8,7 +8,7 @@ import com.example.jgg.ChampionDAO
 import com.example.jgg.SkillDAO
 import com.example.jgg.Champion
 
-@Database(entities = [Champion::class, Skill::class],version =  3,exportSchema = false)
+@Database(entities = [Champion::class, Skill::class],version =  2,exportSchema = false)
 abstract  class Database : RoomDatabase()
 {
     companion object {

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.jgg.MVP.Model
 import com.example.jgg.dataManagers.NetworkManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity()
     public fun startActivity(view: View)
     {
         val intent = Intent(this, InputActivity::class.java)
-        startActivity(intent)
+        this.startActivity(intent)
     }
 
 

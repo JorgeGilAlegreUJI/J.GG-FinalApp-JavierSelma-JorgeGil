@@ -1,30 +1,18 @@
 package com.example.covidstats
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.provider.AlarmClock.EXTRA_MESSAGE
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.jgg.Champion
 import com.example.jgg.InputActivity
 import com.example.jgg.R
-import com.example.jgg.dataManagers.ChampionData
-import org.w3c.dom.Text
-import java.sql.Time
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,private  var inputActivity: InputActivity) :
+class RecyclerAdapter( private  var ChampionsData : List<Champion>,private  var inputActivity: InputActivity) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -38,7 +26,36 @@ class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,pr
 
             itemView.setOnClickListener { v: View ->
                 //CLick on element
-                inputActivity.startSecondActivity(ChampionsData[adapterPosition])
+
+
+
+
+
+                GlobalScope.launch {
+                    var champID = ChampionsData[adapterPosition].championID
+                    var lore = inputActivity.db.ChampionDAO().getChampion(champID).lore
+
+                    if(lore =="empty")
+                    {
+                        inputActivity.activeSnackbar =  inputActivity.view.showSnackBar("Retrieving data from Network, please wait")
+                        inputActivity.networkManager.getChampionIndividualJSON(ChampionsData[adapterPosition].championID)
+                    }
+                    else
+                    {
+                        inputActivity.activeSnackbar =  inputActivity.view.showSnackBar("Retrieving data from Database, please wait")
+                        val champ = inputActivity.db.ChampionDAO().getChampion(champID)
+                        val skills = ArrayList(inputActivity.db.SkillDAO().getAllSkillsFromChampion(champID))
+                        inputActivity.model.startThirdActivity(champ,skills)
+                    }
+
+
+
+                    //var skills =  inputActivity.db.SkillDAO().getAllSkillsFromChampion(ChampionsData[adapterPosition].championID)
+
+                    //inputActivity.startSecondActivity(ChampionsData[adapterPosition], ArrayList(skills))
+                }
+
+
             }
         }
 
@@ -79,6 +96,8 @@ class RecyclerAdapter( private  var ChampionsData : MutableList<ChampionData>,pr
         {
             holder.textView.textSize = maxSize
         }
+
+        inputActivity.activeSnackbar.dismiss()
 
     }
 

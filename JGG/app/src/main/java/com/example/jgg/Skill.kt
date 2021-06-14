@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
+import java.io.Serializable
 
 @Entity(tableName = "Skill_table",
         foreignKeys = [ForeignKey(entity = Champion::class,
@@ -19,7 +20,7 @@ data class Skill
         val skillImageURL:String,
         @ColumnInfo(name = "champion_id", index = true)
         var champion_id: String
-)
+) : Serializable
 {
     override fun toString(): String {
         return name

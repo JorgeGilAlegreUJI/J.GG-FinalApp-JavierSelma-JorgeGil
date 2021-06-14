@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.jgg.Champion
+import com.example.jgg.Database
 import com.example.jgg.InputActivity
 import com.example.jgg.Skill
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,6 @@ import kotlin.reflect.KSuspendFunction1
 
 class NetworkManager constructor(val inputActivity: InputActivity)
 {
-    public val AllChampionData = mutableListOf<ChampionData>()
     //Codigo para hacer la clase Singleton
 
     companion object {
@@ -31,6 +31,45 @@ class NetworkManager constructor(val inputActivity: InputActivity)
                     INSTANCE = it
                 }
             }
+
+        fun stringToArray(string: String) : Array<String>
+        {
+
+            var final = mutableListOf<String>()
+            var lastindex = 0
+
+            for(i in string.indices)
+            {
+                if(string[i] == '*')
+                {
+                    var s = getString(lastindex, i, string)
+                    final.add(s)
+                    lastindex = i+1
+                }
+            }
+
+            return  final.toTypedArray()
+
+
+
+        }
+
+
+        fun getString(from: Int, to: Int, original: String) : String
+        {
+            var final = ""
+
+            for( i in from until  to)
+            {
+                final += original[i]
+            }
+
+            return  final
+
+
+
+        }
+
     }
     private val requestQueue: RequestQueue by lazy {
         // applicationContext is key, it keeps you from leaking the
@@ -80,85 +119,23 @@ class NetworkManager constructor(val inputActivity: InputActivity)
 
     public suspend fun queryAllChampionsInfo()
     {
-        AllChampionData.clear()
 
-        if(inputActivity.db.ChampionDAO().getAllChampionsNames().isEmpty())
+        if(inputActivity.db.ChampionDAO().getAllChampionsNames().isEmpty()) // get info from NW then, display
         {
             val url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion.json"
             query(url, ::insertAllChampionsInfo, ::manageNetworkError, inputActivity)
         }
-        else
+        else // display from db
         {
-            insertFromDBonList()
+            var champs = inputActivity.db.ChampionDAO().getAllChampions()
+            inputActivity.runOnUiThread(Runnable {
+                inputActivity.view.updateVisuals(champs)
+            })
         }
 
     }
 
-    public  suspend fun insertFromDBonList()
-    {
-        var champs = inputActivity.db.ChampionDAO().getAllChampions()
 
-        for(c in champs)
-        {
-            var data = ChampionData(
-                c.name,
-                c.title,
-                    c.championID,
-                c.attackValue,
-                c.defenseValue,
-                c.magicValue,
-                c.difficultyValue,
-                stringToArray(
-                    c.arrayOfTags
-                ),
-                c.portraitURL
-            )
-            AllChampionData.add(data)
-        }
-
-        inputActivity.runOnUiThread(Runnable {
-            inputActivity.updateVisuals()
-        })
-
-
-    }
-
-    fun stringToArray(string: String) : Array<String>
-    {
-
-        var final = mutableListOf<String>()
-        var lastindex = 0
-
-        for(i in string.indices)
-        {
-            if(string[i] == '*')
-            {
-                var s = getString(lastindex, i, string)
-                final.add(s)
-                lastindex = i+1
-            }
-        }
-
-        return  final.toTypedArray()
-
-
-
-    }
-
-    fun getString(from: Int, to: Int, original: String) : String
-    {
-        var final = ""
-
-        for( i in from until  to)
-        {
-            final += original[i]
-        }
-
-        return  final
-
-
-
-    }
 
     fun arrayToString(array: Array<String>) : String
     {
@@ -172,24 +149,6 @@ class NetworkManager constructor(val inputActivity: InputActivity)
         return  final
     }
 
-    suspend  fun addChampToDatabase(championData: ChampionData)
-    {
-        val c = Champion(
-            0,
-                championData.championID,
-            championData.name,
-            championData.title,
-            championData.attackValue,
-            championData.defenseValue,
-            championData.magicValue,
-            championData.difficultyValue,
-            arrayToString(
-                championData.arrayOfTags
-            ),
-            championData.portraitURL,
-        )
-        inputActivity.db.ChampionDAO().insert(c)
-    }
 
     suspend fun getChampionIndividualJSON(champID : String){
         var url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion/$champID.json"
@@ -225,6 +184,13 @@ class NetworkManager constructor(val inputActivity: InputActivity)
         }
 
         val lore = champion.getString("lore")
+        inputActivity.db.ChampionDAO().updateLore(championid,lore)
+
+
+
+        val champ = inputActivity.db.ChampionDAO().getChampion(championid)
+        val skills = ArrayList(inputActivity.db.SkillDAO().getAllSkillsFromChampion(championid))
+        inputActivity.model.startThirdActivity(champ,skills)
 
 
     }
@@ -262,25 +228,31 @@ class NetworkManager constructor(val inputActivity: InputActivity)
 
 
 
-
-            val championdata = ChampionData(
-                name,
-                title,
+            val c = Champion(
+                    0,
                     id,
-                attackValue,
-                defenseValue,
-                magicValue,
-                difficultyValue,
-                champTagsArray,
-                champSquarePortraitURL
+                    name,
+                    title,
+                    attackValue,
+                    defenseValue,
+                    magicValue,
+                    difficultyValue,
+                    arrayToString(champTagsArray),
+                    champSquarePortraitURL,"empty"
             )
-            AllChampionData.add(championdata)
-            addChampToDatabase(championdata)
-
-            getChampionIndividualJSON(id)
+            inputActivity.db.ChampionDAO().insert(c) // se mete en la DB
+            //getChampionIndividualJSON(id)
         }
 
-        inputActivity.updateVisuals()
+
+
+        var champs = inputActivity.db.ChampionDAO().getAllChampions()
+
+        inputActivity.runOnUiThread(Runnable {
+            inputActivity.view.updateVisuals(champs)
+        })
+
+
 
 
     }
@@ -288,7 +260,7 @@ class NetworkManager constructor(val inputActivity: InputActivity)
 
 
 
-
+//al pasar a la segunda act, comprobar si esta el lore, si no esta bloquear carga y enseñar mensaje de: aun estamos buscando
 
 
 
