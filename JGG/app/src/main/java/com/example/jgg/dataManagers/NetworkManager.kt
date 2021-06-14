@@ -9,6 +9,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.jgg.Champion
 import com.example.jgg.InputActivity
+import com.example.jgg.Skill
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -102,6 +103,7 @@ class NetworkManager constructor(val inputActivity: InputActivity)
             var data = ChampionData(
                 c.name,
                 c.title,
+                    c.championID,
                 c.attackValue,
                 c.defenseValue,
                 c.magicValue,
@@ -174,6 +176,7 @@ class NetworkManager constructor(val inputActivity: InputActivity)
     {
         val c = Champion(
             0,
+                championData.championID,
             championData.name,
             championData.title,
             championData.attackValue,
@@ -183,9 +186,47 @@ class NetworkManager constructor(val inputActivity: InputActivity)
             arrayToString(
                 championData.arrayOfTags
             ),
-            championData.portraitURL
+            championData.portraitURL,
         )
         inputActivity.db.ChampionDAO().insert(c)
+    }
+
+    suspend fun getChampionIndividualJSON(champID : String){
+        var url = "https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/champion/$champID.json"
+        query(url, ::parseIndividualChampionInfo, ::manageNetworkError, inputActivity)
+    }
+
+    public suspend fun parseIndividualChampionInfo(response: String){
+        val fulljson = JSONObject(response)
+        val data = fulljson.getJSONObject("data")
+        val champion = data.getJSONObject(data.names()[0].toString())
+        val championid = champion.getString("id")
+
+        val spells = champion.getJSONArray("spells")
+
+        for(i in 0 until spells.length()){
+            val skill = spells.getJSONObject(i)
+
+            val skillName = skill.getString("name")
+            val skillDescription = skill.getString("description")
+
+            val skillImageName = skill.getJSONObject("image").getString("full")
+            val skillImageURL = "https://ddragon.leagueoflegends.com/cdn/11.12.1/img/spell/$skillImageName"
+
+            val s = Skill(
+                    0,
+                    skillName,
+                    skillDescription,
+                    skillImageURL,
+                    championid
+            )
+
+            inputActivity.db.SkillDAO().insert(s)
+        }
+
+        val lore = champion.getString("lore")
+
+
     }
 
     public suspend fun insertAllChampionsInfo(response: String)
@@ -217,8 +258,6 @@ class NetworkManager constructor(val inputActivity: InputActivity)
 
             for (i in 0 until champTags.length()) {
                 champTagsArray[i] = champTags.getString(i).toString()
-
-                // Your code here
             }
 
 
@@ -227,6 +266,7 @@ class NetworkManager constructor(val inputActivity: InputActivity)
             val championdata = ChampionData(
                 name,
                 title,
+                    id,
                 attackValue,
                 defenseValue,
                 magicValue,
@@ -236,6 +276,8 @@ class NetworkManager constructor(val inputActivity: InputActivity)
             )
             AllChampionData.add(championdata)
             addChampToDatabase(championdata)
+
+            getChampionIndividualJSON(id)
         }
 
         inputActivity.updateVisuals()

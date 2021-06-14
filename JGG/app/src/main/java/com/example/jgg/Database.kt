@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.covidstats.ChampionDAO
+import com.example.jgg.ChampionDAO
+import com.example.jgg.SkillDAO
 import com.example.jgg.Champion
 
-@Database(entities = [Champion::class],version =  1,exportSchema = false)
+@Database(entities = [Champion::class, Skill::class],version =  3,exportSchema = false)
 abstract  class Database : RoomDatabase()
 {
     companion object {
@@ -31,4 +32,5 @@ abstract  class Database : RoomDatabase()
     }
 
     abstract  fun ChampionDAO(): ChampionDAO
+    abstract  fun SkillDAO(): SkillDAO
 }

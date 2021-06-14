@@ -1,9 +1,6 @@
-package com.example.covidstats
+package com.example.jgg
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.jgg.Champion
 import com.example.jgg.dataManagers.ChampionData
 
@@ -19,7 +16,5 @@ interface ChampionDAO
 
     @Query("SELECT name FROM Champion_table")
     suspend fun getAllChampionsNames(): List<String>
-
-
 
 }
