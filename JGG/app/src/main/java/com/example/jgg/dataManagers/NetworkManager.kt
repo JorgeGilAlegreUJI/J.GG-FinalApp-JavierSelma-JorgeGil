@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley
 import com.example.jgg.Champion
 import com.example.jgg.Database
 import com.example.jgg.InputActivity
+import com.example.jgg.MVP.Presenter
 import com.example.jgg.Skill
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -190,7 +191,7 @@ class NetworkManager constructor(val inputActivity: InputActivity)
 
         val champ = inputActivity.db.ChampionDAO().getChampion(championid)
         val skills = ArrayList(inputActivity.db.SkillDAO().getAllSkillsFromChampion(championid))
-        inputActivity.model.startThirdActivity(champ,skills)
+        Presenter(inputActivity).startThirdActivity(champ,skills)
 
 
     }

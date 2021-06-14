@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.jgg.Champion
 import com.example.jgg.InputActivity
+import com.example.jgg.MVP.Presenter
 import com.example.jgg.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,7 +46,9 @@ class RecyclerAdapter( private  var ChampionsData : List<Champion>,private  var 
                         inputActivity.activeSnackbar =  inputActivity.view.showSnackBar("Retrieving data from Database, please wait")
                         val champ = inputActivity.db.ChampionDAO().getChampion(champID)
                         val skills = ArrayList(inputActivity.db.SkillDAO().getAllSkillsFromChampion(champID))
-                        inputActivity.model.startThirdActivity(champ,skills)
+                        val p = Presenter(inputActivity)
+                        p.startThirdActivity(champ,skills)
+
                     }
 
 

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.jgg.MVP.Model
+import com.example.jgg.MVP.Presenter
 import com.example.jgg.dataManagers.NetworkManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,23 +19,14 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity()
 {
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
     }
-
-
 
     public fun startActivity(view: View)
     {
-        val intent = Intent(this, InputActivity::class.java)
-        this.startActivity(intent)
+        Presenter(this).startSecondActivity()
     }
 
 
